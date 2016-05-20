@@ -14,7 +14,33 @@ Docker engine (docker, docker compose, docker machine). Everything else is conta
 
 ## Bootstrapping
 
-Run `bootstrap.sh` to initialize new rails application. By default it will generate a postgres backed rails application with API only stack.
+First get services up with:
+
+```
+docker-compose up -d
+```
+
+Use `docker-rails` and `docker-rake` scripts to run rails and rake commands inside web container.
+
+Initialize rails app with:
+
+```
+./docker-rails new -d postgresql
+```
+
+Copy database config:
+
+```
+cp database.yml.tpl config/database.yml
+```
+
+Create database:
+
+```
+docker rake db:create
+```
+
+Contact to your rails app at `192.168.99.100`.
 
 ## Links
 
