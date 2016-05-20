@@ -22,10 +22,10 @@ docker-compose up -d
 
 Use `docker-rails` and `docker-rake` scripts to run rails and rake commands inside web container.
 
-Initialize rails app with:
+Create rails app:
 
 ```
-./docker-rails new -d postgresql
+./docker-rails new . -d postgresql --api --skip-spring --skip-test --force
 ```
 
 Copy database config:
