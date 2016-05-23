@@ -7,7 +7,13 @@ services:
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
     volumes:
       - .:/data/app
+    volumes_from:
+      - gem_data
     ports:
       - "80:3000"
     depends_on:
       - db
+  gem_data:
+    image: busybox
+    volumes:
+      - /data/gems
