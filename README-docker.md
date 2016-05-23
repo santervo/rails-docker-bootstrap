@@ -5,6 +5,7 @@ Base project for starting new rails app with dockerized development environment
 It creates a docker app consisting of following services:
 - web (rails app)
 - db (postgres database)
+- gem_data (gem cache)
 
 Application source is mirrored between host machine and container.
 
@@ -20,23 +21,22 @@ First get services up with:
 docker-compose up -d
 ```
 
-Use `docker-rails` and `docker-rake` scripts to run rails and rake commands inside web container.
-
 Create rails app:
 
 ```
-./docker-rails new . -d postgresql --api --skip-spring --skip-test --force
+docker-compose run web rails new . -d postgresql --api --skip-spring --skip-test --force
 ```
 
-Copy database config:
+Install bundle:
 
 ```
-cp database.yml.tpl config/database.yml
+docker-compose run web bundle install
 ```
 
-Create database:
+Setup database:
 
 ```
+mv database.yml.tpl config/database.yml
 docker rake db:create
 ```
 
