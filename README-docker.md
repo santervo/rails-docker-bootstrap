@@ -34,7 +34,7 @@ mv database.yml.tpl config/database.yml
 docker-compose run web rails db:setup
 ```
 
-Now it's time ot bring all services up:
+Now it's time to bring all services up:
 
 ```
 docker-compose up -d
