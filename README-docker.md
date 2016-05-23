@@ -1,6 +1,6 @@
 # rails-docker-bootstrap
 
-Base project for starting new rails app with dockerized development environment
+Base project for bootstrapping new rails app with dockerized development environment
 
 It creates a docker app consisting of following services:
 - web (rails app)
@@ -15,32 +15,32 @@ Docker engine (docker, docker compose, docker machine). Everything else is conta
 
 ## Bootstrapping
 
-First get services up with:
+First we need to install rails gem. Gem will be persisted in the gem volume.
+
+```
+docker-compose run web gem install rails --version "5.0.0.rc1"
+```
+
+Now we can generate a new rails app with just installed rails command. This will also run bundle install and install all required dependencies to the gem volume. Note that most rails dependencies have already been installed with rails in the previous command. We'll initialize new app backed by postgresql database, with api-only stack. I'll also skip test unit as I prefer rspec. We'll also have to add force flag to allow rails to override README.md with it's own version.
+
+```
+docker-compose run web rails new . -d postgresql --api --skip-test --skip-spring --force
+```
+
+Next setup database(s). Database configuration needs to be updated to point to our db container.
+
+```
+mv database.yml.tpl config/database.yml
+docker-compose run web rails db:setup
+```
+
+Now it's time ot bring all services up:
 
 ```
 docker-compose up -d
 ```
 
-Create rails app:
-
-```
-docker-compose run web rails new . -d postgresql --api --skip-spring --skip-test --force
-```
-
-Install bundle:
-
-```
-docker-compose run web bundle install
-```
-
-Setup database:
-
-```
-mv database.yml.tpl config/database.yml
-docker rake db:create
-```
-
-Contact to your rails app at `192.168.99.100`.
+Our just created rails app should now be listening in address `192.168.99.100`.
 
 ## Links
 
